@@ -1,4 +1,4 @@
-# Besik Deterministic Finite Automata 
+# Baesik Deterministic Finite Automata 
 
 This is a product of boredom and curiosity during the Covid-19 lockdown.
 
