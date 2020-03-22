@@ -4,7 +4,7 @@ This is a product of boredom and curiosity during the Covid-19 lockdown.
 
 This can simulate any deterministic finite automata, I'd like to simulate NFAs as well, so if any of you are interested, please feel free to contribute!
 
-Here's an example of a DFA that accepts no more than 3 a's:
+Here's an example in python of a DFA that accepts no more than 3 a's:
 
 ```py
 #initialize the DFA with its alphabet
