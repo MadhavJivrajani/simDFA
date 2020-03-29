@@ -18,7 +18,8 @@ class DFA:
                      Each key will have a list of tuple(s)
         states: Set of states of the DFA
                 A dictionary with state names as keys and values as an object of the class State
-        rejected: Flag to indicated whether a state ends up "dead" or there is not defined transisiton for the current input symbol
+        rejected: Flag to indicated whether a state ends up "dead" or there is not defined 
+                  transisiton for the current input symbol
         curr_state : Keeps track of the state the DFA is currently in after each transistion 
         """
         self.sigma = alphabet        
@@ -99,3 +100,30 @@ class DFA:
             print("Accepted!")
         else:
             print("Rejected")
+
+
+dfa = DFA(['a','b'])
+
+#add states to the DFA
+dfa.add_state(1, 1, 'q0')
+dfa.add_state(0, 1, 'q1')
+dfa.add_state(0, 1, 'q2')
+dfa.add_state(0, 1, 'q3')
+dfa.add_state(0, 0, 'q4')
+
+#add transitions to the DFA 
+dfa.add_transition('q0', 'a', 'q1')
+dfa.add_transition('q0', 'b', 'q0')
+dfa.add_transition('q1', 'a', 'q2')
+dfa.add_transition('q1', 'b', 'q1')
+dfa.add_transition('q2', 'a', 'q3')
+dfa.add_transition('q2', 'b', 'q2')
+dfa.add_transition('q3', 'a', 'q4')
+dfa.add_transition('q3', 'b', 'q3')
+dfa.add_transition('q4', 'a', 'q4')
+dfa.add_transition('q4', 'b', 'q4')
+
+dfa.evaluate_string("aaab")  #Accepted!
+dfa.evaluate_string("aaaab") #Rejected
+dfa.evaluate_string("")	     #Accepted!
+dfa.evaluate_string("bbbb")  #Accepted!
