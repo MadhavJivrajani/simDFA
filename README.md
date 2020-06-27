@@ -8,6 +8,7 @@ Languages implemented in so far:
 - Python
 - JavaScript
 - C++
+- Go
 
 Here's an example in python of a DFA that accepts no more than 3 a's:
 
