@@ -1,13 +1,13 @@
 #lang racket/base
 
-(require racket/contract)
+(require racket/contract
+         racket/list)
 
-; these ensure valid input
+; these ensure valid input types
 (provide (contract-out
           [struct dfa
             ((alphabet (listof symbol?))
              (states (listof symbol?))
-             ; (transitions (listof any/c))
              (transitions (cons/c symbol? (listof (list/c symbol? symbol?))))
              (initial symbol?)
              (final (listof symbol?)))]
@@ -22,7 +22,24 @@
                   #:transitions transitions
                   #:initial     initial
                   #:final       final)
-  (dfa alphabet states transitions initial final))
+  (define states-in-transitions
+    (for/list ([state (in-list transitions)])
+      (first state)))
+  (cond
+    [(not (equal? states states-in-transitions))
+     (raise-user-error 'make-dfa
+                       "transitions for states must be defined once per state:\n ~a"
+                       transitions)]
+    [(ormap (λ (t) (check-duplicates (rest t) #:key first)) transitions)
+     (raise-user-error 'make-dfa
+                       "more than one transition defined for some input in:\n ~a"
+                       transitions)]
+    [(ormap (compose (λ (n) (< n (length alphabet))) sub1 length) transitions)
+     (raise-user-error 'make-dfa
+                       "not enough transitions defined for some input in:\n ~a"
+                       transitions)]
+    [else 
+     (dfa alphabet states transitions initial final)]))
 
 (define (string->symbol-list str)
   (map (compose string->symbol string) (string->list str)))
@@ -33,11 +50,11 @@
     (cond
       [(null? input) (if (member state (dfa-final a-dfa)) #t #f)]
       [(not
-        (member (car input) (dfa-alphabet a-dfa))) #f]
+        (member (first input) (dfa-alphabet a-dfa))) #f]
       [else
        (define transition
          (assoc state (dfa-transitions a-dfa)))
        (define next-state
-         (cadr (assoc (car input) (cdr transition))))
-       (eval-util next-state (cdr input))])))
+         (cadr (assoc (first input) (rest transition))))
+       (eval-util next-state (rest input))])))
     
