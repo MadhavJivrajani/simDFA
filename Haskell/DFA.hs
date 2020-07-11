@@ -1,30 +1,17 @@
-module DFA (DFA, Transition(..), makeDFA, parse) where
+module DFA (makeDFA, parseWithDFA) where
 import Control.Monad
+import Base (StateMachine(..), Transition(..), head')
+import NFA (makeNFA)
+import Data.List (nubBy)
 
-data Transition a b = Transition { from :: a, input :: b, to :: a } deriving (Show)
+makeDFA :: (Eq a, Eq b) => StateMachine a b -> StateMachine a b
+makeDFA sm@(StateMachine states alphabet initialState finalStates transitions)
+  | not . null $ nubBy (\x y -> from x == from y && input x == input y) transitions = error "Invalid transitions"
+  | otherwise = makeNFA sm
 
-data DFA a b = DFA { 
-        states       :: [a],
-        alphabet     :: [b],
-        initialState :: a,
-        finalStates  :: [a],
-        transitions  :: [Transition a b]
-                   } deriving (Show)
-
-makeDFA :: (Eq a, Eq b) => [a] -> [b] -> a -> [a]-> [Transition a b] -> DFA a b
-makeDFA states alphabet initialState finalStates transitions
-  | initialState `notElem` states = error "Invalid initial state"
-  | not (all (flip elem alphabet . input) transitions)
-      || not (all (flip elem states . from) transitions)
-      || not (all (flip elem states . to) transitions) = error "Invalid transitions"
-  | otherwise = DFA states alphabet initialState finalStates transitions
-
-head' :: [a] -> Maybe a
-head' [] = Nothing 
-head' (x:xs) = Just x
-
-parse :: (Eq a, Eq b) => DFA a b -> [b] -> Maybe Bool
-parse (DFA _ _ initialState finalStates transitions) bs = do
-    let foldingFn state i = to <$> head' (filter (\t -> (from t == state) && (input t == i)) transitions)
+parseWithDFA :: (Eq a, Eq b) => StateMachine a b -> [b] -> Maybe Bool
+parseWithDFA (StateMachine _ _ initialState finalStates transitions) bs = do
+    let foldingFn state i = let filterFn t = (from t == state) && (input t == i)
+            in to <$> head' (filter filterFn transitions)
     result <- foldM foldingFn initialState bs
     return (result `elem` finalStates)
