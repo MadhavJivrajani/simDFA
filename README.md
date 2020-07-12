@@ -10,7 +10,7 @@ Languages implemented in so far:
 - C++
 - Go
 - Racket
-- Haskell
+- Haskell (NFA evaluator included)
 
 Here's an example in python of a DFA that accepts no more than 3 a's:
 
