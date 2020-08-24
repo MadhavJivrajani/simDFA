@@ -11,6 +11,7 @@ Languages implemented in so far:
 - Go
 - Racket
 - Haskell (NFA evaluator included)
+- Nim
 
 Here's an example in python of a DFA that accepts no more than 3 a's:
 
