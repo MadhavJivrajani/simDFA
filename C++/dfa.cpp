@@ -12,7 +12,7 @@ State::State(bool s_start, bool s_final, string s_name)
   : is_start(s_start), is_final(s_final), name(s_name) {}
 
 DFA::DFA(vector<string> alphabet)
-  : sigma(alphabet), rejected(0), __num_start_states(0), curr_state(nullptr) {}
+  : sigma(alphabet), rejected(0), num_start_states(0), curr_state(nullptr) {}
 
 
 void DFA::add_state(bool is_start, bool is_final, string name) {
@@ -20,9 +20,9 @@ void DFA::add_state(bool is_start, bool is_final, string name) {
     State *state = new State(is_start, is_final, name);
     states[name] = state;
     if(is_start) {
-      ++__num_start_states;
+      ++num_start_states;
     }
-    if(__num_start_states != 1) {
+    if(num_start_states > 1) {
       cout << "More than one start state detected but node added\n";
     }
   } else {
@@ -91,7 +91,7 @@ void DFA::apply_transition(vector<string> partial_transition) {
 
 void DFA::evaluate_string(string str) {
 
-  if(__num_start_states != 1) {
+  if(num_start_states != 1) {
     cout << "More than one start state detected. Exiting\n";
     return;
   }

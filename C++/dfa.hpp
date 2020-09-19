@@ -12,12 +12,14 @@ public:
 };
 
 class DFA {
+private:
+  int num_start_states;
 public:
   vector<string> sigma;
   map<string, vector<tuple<string, string, string>>> transitions;
   map<string, State*> states;
   int rejected;
-  int __num_start_states;
+
   State* curr_state;
   
   DFA(vector<string> alphabet);
