@@ -38,7 +38,7 @@ class DFA:
             if is_start:
                 self.__num_start_states += 1
             
-            if self.__num_start_states != 1:
+            if self.__num_start_states > 1:
                 #This is done in this fashion from a user-convinience point of view.
                 # Say, a user has mistakenly set a previous node as start when actually the current node is
                 # the start node. In that case, if the current node is rejected directly, that means they can't add
