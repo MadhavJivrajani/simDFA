@@ -21,6 +21,7 @@ class DFA:
         rejected: Flag to indicated whether a state ends up "dead" or there is not defined 
                   transisiton for the current input symbol
         curr_state : Keeps track of the state the DFA is currently in after each transistion 
+        __num_start_states : Number of states marked as start state in the DFA.
         """
         self.sigma = alphabet        
         self.transitions = {}
@@ -28,10 +29,19 @@ class DFA:
         self.rejected = 0
         
         self.curr_state = None
+        self.__num_start_states = 0
     
     def add_state(self, is_start, is_final, name):
         if name not in self.states:
             self.states[name] = State(is_start, is_final, name)
+
+            if is_start:
+                self.__num_start_states += 1
+            
+            # to ensure that at any point during addition of states, there
+            # is at most one start state.
+            if self.__num_start_states > 1:
+                print("More than one start state detected but node added")
         else:
             print("State already exists!")
     
@@ -78,6 +88,11 @@ class DFA:
             self.rejected = 1
     
     def evaluate_string(self, string):
+
+        if self.__num_start_states != 1:
+            print("More than one start state detected. Exiting")
+            return
+
         for symbol in list(set(string)):
             if symbol not in self.sigma:
                 print("'"+symbol+"' is not part of the alphabet")
