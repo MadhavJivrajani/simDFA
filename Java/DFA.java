@@ -57,7 +57,7 @@ public class DFA{
         List<String> temp = new ArrayList<String>();
         temp.addAll(Arrays.asList(new String[]{curr_state,input_symbol,next_state}));
         ArrayList<List<String>> old_value = this.transitions.get(input_symbol);
-        old_value.add(temp);
+        old_value.add(temp); //becomes new value
         this.transitions.put(input_symbol, old_value);
     }
 
@@ -120,13 +120,13 @@ public class DFA{
         this.curr_state = start_state;
         for(int i = 0; i < string.length(); i++){
             if(this.rejected == 0){
-                this.apply_transition(curr_state.name, Character.toString(string.charAt(i)));
+                this.apply_transition(this.curr_state.name, Character.toString(string.charAt(i)));
             }else{
                 print("Rejected");
                 return;
             }
         }
-        if(final_states.contains(curr_state.name)){
+        if(final_states.contains(this.curr_state.name)){
             print("Accepted!");
             
         }else{
