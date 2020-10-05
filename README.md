@@ -12,6 +12,7 @@ Languages implemented in so far:
 - Racket
 - Haskell (NFA evaluator included)
 - Nim
+- Java
 
 Here's an example in python of a DFA that accepts no more than 3 a's:
 
