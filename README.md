@@ -9,7 +9,7 @@ Languages implemented in so far:
 - JavaScript
 - C++
 - Go
-- Julia
+- Julia (NFA evaluator included)
 - Racket
 - Haskell (NFA evaluator included)
 - Nim
